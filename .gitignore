@@ -1,0 +1,25 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# AWS credentials
+*.pem
+*.key
+
+# Secrets
+secrets/
+*.secret
+
+# Temporary files
+*.tmp
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Azure config files
+azure.conf
+*.conf
+!*.conf.example
