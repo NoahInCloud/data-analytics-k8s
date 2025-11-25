@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    # TODO: Update this with your Git repository URL (e.g., https://github.com/username/data-analytics.git)
+    repoURL: https://github.com/YOURUSER/YOURREPO.git
+    targetRevision: HEAD
+    path: kustomize/install/default
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: data-analytics-test
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
