@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: data-analytics-test
+
+secretGenerator:
+- name: pgo-multi-repo-creds
+  files:
+  - azure.conf
+  - gcs.conf
+  - gcs-key.json
+  - s3.conf
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- postgres.yaml

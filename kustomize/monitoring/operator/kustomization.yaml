@@ -1,0 +1,5 @@
+namespace: data-analytics-test
+
+resources:
+- grafana
+- prometheus
