@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: grafana-public
+
+resources:
+- namespace.yaml
+- deployment.yaml
+- pvc.yaml
+- service.yaml
+- serviceaccount.yaml
+
+secretGenerator:
+- name: grafana-admin
+  literals:
+  - username=admin
+  - password=grafana-public-pass
+  type: Opaque
+
+generatorOptions:
+  disableNameSuffixHash: true

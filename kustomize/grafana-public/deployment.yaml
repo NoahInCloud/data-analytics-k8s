@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-public
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-public
+  template:
+    metadata:
+      labels:
+        app: grafana-public
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:11.1.13
+        ports:
+        - containerPort: 3000
+          name: grafana
+        env:
+        - name: GF_PATHS_DATA
+          value: /data/grafana/data
+        - name: GF_SECURITY_ADMIN_USER__FILE
+          value: /conf/admin/username
+        - name: GF_SECURITY_ADMIN_PASSWORD__FILE
+          value: /conf/admin/password
+        - name: GF_SERVER_ROOT_URL
+          value: http://grafana-public:3000
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+          value: "Viewer"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 25
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+        volumeMounts:
+        - mountPath: /data
+          name: grafanadata
+        - mountPath: /conf/admin
+          name: grafana-admin
+      securityContext:
+        fsGroup: 472
+      serviceAccountName: grafana-public
+      volumes:
+      - name: grafanadata
+        persistentVolumeClaim:
+          claimName: grafanadata
+      - name: grafana-admin
+        secret:
+          defaultMode: 420
+          secretName: grafana-admin

@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-internal
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/NoahInCloud/data-analytics-k8s.git
+    targetRevision: HEAD
+    path: kustomize/grafana-internal
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: grafana-internal
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
