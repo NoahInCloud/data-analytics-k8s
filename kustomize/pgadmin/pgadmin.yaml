@@ -10,6 +10,7 @@ spec:
         name: pgadmin-password-secret
         key: rhino-password
   dataVolumeClaimSpec:
+    storageClassName: gp2
     accessModes:
     - "ReadWriteOnce"
     resources:

@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pgadmin
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/NoahInCloud/data-analytics-k8s.git
+    targetRevision: HEAD
+    path: kustomize/pgadmin
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: data-analytics-test
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
