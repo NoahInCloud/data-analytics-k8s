@@ -5,6 +5,7 @@ namespace: data-analytics-test
 
 resources:
 - pgadmin.yaml
+- pgadmin-service.yaml
 
 secretGenerator:
 - name: pgadmin-password-secret
