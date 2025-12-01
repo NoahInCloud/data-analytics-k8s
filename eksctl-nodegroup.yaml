@@ -1,0 +1,33 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: data-analytics-cluster
+  region: eu-central-1
+
+vpc:
+  id: vpc-0468bafe044fc453d
+  subnets:
+    public:
+      eu-central-1a:
+        id: subnet-056ba4cb1480cc6a2
+      eu-central-1b:
+        id: subnet-098a44da636571e62
+      eu-central-1c:
+        id: subnet-0106ab6ae252b246c
+
+managedNodeGroups:
+  - name: managed-nodes
+    instanceType: t3.small
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 3
+    volumeSize: 20
+    ssh:
+      allow: false
+    iam:
+      withAddonPolicies:
+        ebs: true
+        efs: true
+        albIngress: true
+        autoScaler: true
